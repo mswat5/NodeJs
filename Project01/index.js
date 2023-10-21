@@ -1,8 +1,42 @@
 const express = require('express');
-
+const users = require('./MOCK_DATA.json')
+const fs = require('fs');
 const app = express();
 
+//middleware
+app.use(express.urlencoded({ extended: false }));
 
-app.listen(8000,()=>{
+
+//routes
+
+app.get('/api/users', (req, res) => {
+    return res.json(users);
+})
+
+app.route('/api/users/:id')
+    .get((req, res) => {
+        const id = Number(req.params.id);
+        const user = users.find((user) => user.id === id);
+        return res.json(user);
+    })
+    .patch((req, res) => {
+
+    })
+    .delete((req, res) => {
+        
+    })
+
+app.get('/api/users/:id', (req, res) => {
+
+})
+app.post('/api/users', (req, res) => {
+    const user = req.body;
+    users.push({ ...user, id: users.length + 1 });
+    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
+        return res.json({ status: "success", id: users.length })
+    })
+})
+
+app.listen(8000, () => {
     console.log('server is running on port 8000')
 })
