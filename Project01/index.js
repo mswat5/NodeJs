@@ -1,7 +1,31 @@
 const express = require('express');
 const users = require('./MOCK_DATA.json')
 const fs = require('fs');
+const mongoose = require('mongoose');
 const app = express();
+
+
+
+const userSchema = new mongoose.Schema({
+    firstName:{
+        type:string,
+        required:true,
+    },
+    lastName:{
+        type:string,
+    },
+    email:{
+        type:string,
+        required:true,
+        unique:true,
+    },
+    jobTitle:{
+        type:string,
+    },
+    gender:{
+        type:string,
+    }
+})
 
 //middleware
 app.use(express.urlencoded({ extended: false }));
@@ -9,7 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 
 //routes
 
-app.get('/api/users', (req, res) => {
+app.get('/api/users',(req, res) => {
     return res.json(users);
 })
 
@@ -23,7 +47,7 @@ app.route('/api/users/:id')
 
     })
     .delete((req, res) => {
-        
+
     })
 
 app.get('/api/users/:id', (req, res) => {
