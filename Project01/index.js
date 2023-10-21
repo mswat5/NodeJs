@@ -4,35 +4,38 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const app = express();
 
+//connection
+mongoose.connect('mongodb://127.0.0.1:27017/ytapp1')
+.then(() => console.log('mongo connected'))
+.catch((err) => console.log('mongo ki error',err))
 
-
+//schema
 const userSchema = new mongoose.Schema({
     firstName:{
-        type:string,
-        required:true,
+        type:"string",
+        required:"true",
     },
     lastName:{
-        type:string,
+        type:"string",
     },
     email:{
-        type:string,
-        required:true,
-        unique:true,
+        type:"string",
+        required:"true",
+        unique:"true",
     },
     jobTitle:{
-        type:string,
+        type:"string",
     },
     gender:{
-        type:string,
+        type:"string",
     }
 })
+const User = mongoose.model("user", userSchema)
 
 //middleware
 app.use(express.urlencoded({ extended: false }));
 
-
 //routes
-
 app.get('/api/users',(req, res) => {
     return res.json(users);
 })
